@@ -84,9 +84,9 @@ def main() -> int:
         choice = input("选择 [1/2] (默认=1): ").strip()
 
     if choice == "2":
-        script = ROOT / "outputs" / "apply_form_plan.py"
+        script = ROOT / "apply_form_plan.py"
     else:
-        script = ROOT / "outputs" / "dump_form_schema.py"
+        script = ROOT / "dump_form_schema.py"
 
     return run([sys.executable, str(script)])
 
