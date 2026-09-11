@@ -1,0 +1,304 @@
+{
+  "fills": [
+    {
+      "anchor_id": "resume_basicInfo_name",
+      "kind": "text",
+      "value": "张三",
+      "note": "来自简历姓名"
+    },
+    {
+      "anchor_id": "证件类型",
+      "kind": "dropdown",
+      "pick_label": "身份证",
+      "note": "证件号为中国身份证格式"
+    },
+    {
+      "anchor_id": "resume_basicInfo_idCard",
+      "kind": "text",
+      "value": "110101200001012345",
+      "note": "来自简历证件号"
+    },
+    {
+      "anchor_id": "resume_basicInfo_gender",
+      "kind": "radio",
+      "pick_label": "男",
+      "note": "来自简历性别"
+    },
+    {
+      "anchor_id": "出生日期",
+      "kind": "date",
+      "value": "2000-01-01",
+      "note": "来自简历出生日期"
+    },
+    {
+      "anchor_id": "resume_basicInfo_mobile",
+      "kind": "text",
+      "value": "13800138000",
+      "note": "来自简历手机号"
+    },
+    {
+      "anchor_id": "resume_basicInfo_email",
+      "kind": "text",
+      "value": "example@example.com",
+      "note": "来自简历邮箱"
+    },
+    {
+      "anchor_id": "政治面貌",
+      "kind": "dropdown",
+      "pick_label": "共青团员",
+      "note": "来自简历政治面貌"
+    },
+    {
+      "anchor_id": "民族",
+      "kind": "dropdown",
+      "pick_label": "汉族",
+      "note": "来自简历民族"
+    },
+    {
+      "anchor_id": "resume_basicInfo_weight",
+      "kind": "text",
+      "value": "70",
+      "note": "来自简历体重"
+    },
+    {
+      "anchor_id": "resume_basicInfo_height",
+      "kind": "text",
+      "value": "175",
+      "note": "来自简历身高"
+    },
+    {
+      "anchor_id": "生源地",
+      "kind": "cascader",
+      "value": "北京 海淀区",
+      "note": "根据户口及现居地推断"
+    },
+    {
+      "anchor_id": "出生地",
+      "kind": "cascader",
+      "value": "北京 海淀区",
+      "note": "根据出生地及地址推断"
+    },
+    {
+      "anchor_id": "招聘信息来源",
+      "kind": "dropdown",
+      "pick_label": "校园招聘",
+      "note": "在读学生求职场景推断"
+    },
+    {
+      "anchor_id": "面试期望城市",
+      "kind": "dropdown",
+      "pick_label": "北京",
+      "note": "根据现居住地推断"
+    },
+    {
+      "anchor_id": "婚姻状况可选",
+      "kind": "dropdown",
+      "pick_label": "未婚",
+      "note": "来自简历婚姻状况"
+    },
+    {
+      "anchor_id": "resume_basicInfo_currentResidence",
+      "kind": "text",
+      "value": "北京市海淀区",
+      "note": "来自简历现居地址"
+    },
+    {
+      "anchor_id": "resume_basicInfo_hasFormalWork",
+      "kind": "radio",
+      "pick_label": "否",
+      "note": "简历仅有实习经历"
+    },
+    {
+      "anchor_id": "resume_basicInfo_selfAssessment",
+      "kind": "textarea",
+      "value": "计算机专业硕士在读，具备扎实的编程基础和项目实战经验，具备良好的团队协作和沟通能力。",
+      "note": "综合自我评价提炼"
+    },
+    {
+      "anchor_id": "学历",
+      "kind": "dropdown",
+      "pick_label": "硕士",
+      "note": "最高学历为硕士在读"
+    },
+    {
+      "anchor_id": "学校名称",
+      "kind": "dropdown",
+      "pick_label": "示例大学",
+      "note": "最高学历就读学校"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_1_faculty",
+      "kind": "text",
+      "value": "计算机学院",
+      "note": "根据专业推断院系"
+    },
+    {
+      "anchor_id": "专业名称",
+      "kind": "dropdown",
+      "pick_label": "计算机科学与技术",
+      "note": "最高学历专业"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_1_majorRanking",
+      "kind": "radio",
+      "pick_label": "前20%",
+      "note": "简历专业排名前5%"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_1_fullEducation",
+      "kind": "radio",
+      "pick_label": "是",
+      "note": "硕士为全日制"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_1_cooperateExchange",
+      "kind": "radio",
+      "pick_label": "否",
+      "note": "未提及合作交流项目"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_1_graduationDesign",
+      "kind": "textarea",
+      "value": "校园二手交易平台架构设计与实现，基于 React + Node.js 技术栈。",
+      "note": "根据科研项目内容填写"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_2_faculty",
+      "kind": "text",
+      "value": "软件学院",
+      "note": "根据专业推断院系"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_2_majorRanking",
+      "kind": "radio",
+      "pick_label": "前20%",
+      "note": "简历专业排名前5%"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_2_fullEducation",
+      "kind": "radio",
+      "pick_label": "是",
+      "note": "本科为全日制"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_2_cooperateExchange",
+      "kind": "radio",
+      "pick_label": "否",
+      "note": "未提及合作交流项目"
+    },
+    {
+      "anchor_id": "resume_educationHistoryList_2_graduationDesign",
+      "kind": "textarea",
+      "value": "基于 Web 的在线学习系统设计与实现。",
+      "note": "根据本科科研项目填写"
+    },
+    {
+      "anchor_id": "resume_basicInfo_hasRelative",
+      "kind": "radio",
+      "pick_label": "否",
+      "note": "家庭成员信息为空"
+    },
+    {
+      "anchor_id": "resume_familyList_0_workInMerchantsGroup",
+      "kind": "radio",
+      "pick_label": "否",
+      "note": "无集团亲属信息"
+    },
+    {
+      "anchor_id": "resume_familyList_1_workInMerchantsGroup",
+      "kind": "radio",
+      "pick_label": "否",
+      "note": "无集团亲属信息"
+    },
+    {
+      "anchor_id": "最高英语水平",
+      "kind": "dropdown",
+      "pick_label": "大学英语六级",
+      "note": "已取得英语六级证书"
+    },
+    {
+      "anchor_id": "resume_skill_0_computerSkill",
+      "kind": "text",
+      "value": "计算机二级",
+      "note": "已取得计算机二级证书"
+    },
+    {
+      "anchor_id": "resume_skill_0_otherSituation",
+      "kind": "textarea",
+      "value": "熟悉 Python、JavaScript、React 等技术栈；爱好阅读和跑步。",
+      "note": "综合爱好和证书填写"
+    },
+    {
+      "anchor_id": "resume_internshipExperienceList_0_companyName",
+      "kind": "text",
+      "value": "示例科技有限公司",
+      "note": "来自第一段实习经历"
+    },
+    {
+      "anchor_id": "resume_internshipExperienceList_0_city",
+      "kind": "text",
+      "value": "北京",
+      "note": "根据实习单位所在地填写"
+    },
+    {
+      "anchor_id": "resume_internshipExperienceList_0_jobResponsibility",
+      "kind": "text",
+      "value": "前端开发实习生",
+      "note": "来自第一段实习职位"
+    },
+    {
+      "anchor_id": "resume_internshipExperienceList_0_formal",
+      "kind": "radio",
+      "pick_label": "否",
+      "note": "该经历属于实习"
+    },
+    {
+      "anchor_id": "resume_internshipExperienceList_0_practiceContent",
+      "kind": "textarea",
+      "value": "参与公司核心产品的前端开发，使用 React + TypeScript 技术栈，累计提交代码 50+ 次，与后端团队协作完成 API 对接。",
+      "note": "提炼第一段实习成果"
+    },
+    {
+      "anchor_id": "荣誉类型",
+      "kind": "dropdown",
+      "pick_label": "奖学金",
+      "note": "首项荣誉为校级奖学金"
+    },
+    {
+      "anchor_id": "resume_awardList_0_awardName",
+      "kind": "text",
+      "value": "示例大学校级一等奖学金",
+      "note": "来自第一项个人荣誉"
+    },
+    {
+      "anchor_id": "获奖级别",
+      "kind": "dropdown",
+      "pick_label": "校级",
+      "note": "第一项荣誉级别"
+    },
+    {
+      "anchor_id": "resume_awardList_1_awardName",
+      "kind": "text",
+      "value": "全国大学生程序设计竞赛二等奖",
+      "note": "来自第二项个人荣誉"
+    },
+    {
+      "anchor_id": "resume_clubActivityList_0_communityName",
+      "kind": "text",
+      "value": "示例大学学生会技术部",
+      "note": "来自第一段学生工作"
+    },
+    {
+      "anchor_id": "resume_clubActivityList_0_schoolOfficeName",
+      "kind": "text",
+      "value": "技术部成员",
+      "note": "来自学生会任职"
+    },
+    {
+      "anchor_id": "resume_clubActivityList_0_schoolOfficeDescription",
+      "kind": "textarea",
+      "value": "负责学校活动的技术支持工作，参与组织 3 场校级技术沙龙活动。",
+      "note": "提炼学生会工作成果"
+    }
+  ]
+}

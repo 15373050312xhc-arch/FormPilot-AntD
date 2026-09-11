@@ -1,0 +1,23 @@
+# 浏览器 profile（含登录态/cookies，敏感）
+work/
+
+# dump 运行时产物（用户自己跑 dump 生成）
+outputs/form_outline.txt
+outputs/form_prompt.txt
+outputs/form_page.html
+
+# 真实简历数据（用户自己替换）
+outputs/resume_data.json
+outputs/form_plan.json
+outputs/form_schema.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# PDF 简历
+*.pdf
+
+# 调试产物
+*debug*

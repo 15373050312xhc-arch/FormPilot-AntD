@@ -1,0 +1,1923 @@
+{
+  "page_url": "",
+  "dumped_at": "2026-09-10 19:09:33",
+  "field_count": 99,
+  "fields": [
+    {
+      "anchor": {
+        "id": "resume_basicInfo_name",
+        "name": "",
+        "label": "姓名",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_basicInfo_name"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "姓名",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "证件类型",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "证件类型"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "证件类型",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_idCard",
+        "name": "",
+        "label": "证件号",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_basicInfo_idCard"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "证件号",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_gender",
+        "name": "",
+        "label": "性别",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_basicInfo_gender"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "性别",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "男",
+          "value": "true"
+        },
+        {
+          "text": "女",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "出生日期",
+        "section": "",
+        "placeholder": "",
+        "key": "出生日期"
+      },
+      "kind": "date",
+      "tag": "div",
+      "label": "出生日期",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_mobile",
+        "name": "",
+        "label": "手机号",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_basicInfo_mobile"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "手机号",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": "18165607346"
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_email",
+        "name": "",
+        "label": "邮箱",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_basicInfo_email"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "邮箱",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "政治面貌",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "政治面貌"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "政治面貌",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "民族",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "民族"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "民族",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_weight",
+        "name": "",
+        "label": "体重",
+        "section": "",
+        "placeholder": "请输入您的体重",
+        "key": "resume_basicInfo_weight"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "体重",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入您的体重",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_height",
+        "name": "",
+        "label": "身高",
+        "section": "",
+        "placeholder": "请输入您的身高",
+        "key": "resume_basicInfo_height"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "身高",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入您的身高",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "生源地",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "生源地"
+      },
+      "kind": "cascader",
+      "tag": "div",
+      "label": "生源地",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "出生地",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "出生地"
+      },
+      "kind": "cascader",
+      "tag": "div",
+      "label": "出生地",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "招聘信息来源",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "招聘信息来源"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "招聘信息来源",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "面试期望城市",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "面试期望城市"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "面试期望城市",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "婚姻状况可选",
+        "section": "（可选）",
+        "placeholder": "请选择",
+        "key": "婚姻状况可选"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "婚姻状况可选",
+      "section": "（可选）",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_currentResidence",
+        "name": "",
+        "label": "现居住地",
+        "section": "",
+        "placeholder": "请输入详细地址，例如XX省XX市XX区XX街道XX小区XX栋XX单元XX号",
+        "key": "resume_basicInfo_currentResidence"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "现居住地",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入详细地址，例如XX省XX市XX区XX街道XX小区XX栋XX单元XX号",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_hasFormalWork",
+        "name": "",
+        "label": "是否参加过正式工作",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_basicInfo_hasFormalWork"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "是否参加过正式工作",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_selfAssessment",
+        "name": "",
+        "label": "自我评价",
+        "section": "",
+        "placeholder": "可用5个词描述你的性格",
+        "key": "resume_basicInfo_selfAssessment"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "自我评价",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "可用5个词描述你的性格",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "学历",
+        "section": "",
+        "placeholder": "",
+        "key": "学历"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "学历",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": "高中"
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_0_collegeName",
+        "name": "",
+        "label": "学校名称",
+        "section": "",
+        "placeholder": "请输入高中学校名称",
+        "key": "resume_educationHistoryList_0_collegeName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "学校名称",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入高中学校名称",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "学历",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "学历"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "学历",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "学校名称",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "学校名称"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "学校名称",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_1_faculty",
+        "name": "",
+        "label": "院系",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_educationHistoryList_1_faculty"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "院系",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "专业名称",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "专业名称"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "专业名称",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_1_majorRanking",
+        "name": "",
+        "label": "专业排名",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_educationHistoryList_1_majorRanking"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "专业排名",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "前20%",
+          "value": "RM002"
+        },
+        {
+          "text": "中等",
+          "value": "RM003"
+        },
+        {
+          "text": "中下等",
+          "value": "RM004"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_1_fullEducation",
+        "name": "",
+        "label": "全日制",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_educationHistoryList_1_fullEducation"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "全日制",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "1"
+        },
+        {
+          "text": "否",
+          "value": "0"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_1_cooperateExchange",
+        "name": "",
+        "label": "合作交流项目",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_educationHistoryList_1_cooperateExchange"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "合作交流项目",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_1_graduationDesign",
+        "name": "",
+        "label": "毕业设计",
+        "section": "",
+        "placeholder": "可阐述毕业设计、课题和方向",
+        "key": "resume_educationHistoryList_1_graduationDesign"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "毕业设计",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "可阐述毕业设计、课题和方向",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "学历",
+        "section": "",
+        "placeholder": "请选择",
+        "key": "学历"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "学历",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "学校名称",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "学校名称"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "学校名称",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_2_faculty",
+        "name": "",
+        "label": "院系",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_educationHistoryList_2_faculty"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "院系",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "专业名称",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "专业名称"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "专业名称",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_2_majorRanking",
+        "name": "",
+        "label": "专业排名",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_educationHistoryList_2_majorRanking"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "专业排名",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "前20%",
+          "value": "RM002"
+        },
+        {
+          "text": "中等",
+          "value": "RM003"
+        },
+        {
+          "text": "中下等",
+          "value": "RM004"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_2_fullEducation",
+        "name": "",
+        "label": "全日制",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_educationHistoryList_2_fullEducation"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "全日制",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "1"
+        },
+        {
+          "text": "否",
+          "value": "0"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_2_cooperateExchange",
+        "name": "",
+        "label": "合作交流项目",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_educationHistoryList_2_cooperateExchange"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "合作交流项目",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_educationHistoryList_2_graduationDesign",
+        "name": "",
+        "label": "毕业设计",
+        "section": "",
+        "placeholder": "可阐述毕业设计、课题和方向",
+        "key": "resume_educationHistoryList_2_graduationDesign"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "毕业设计",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "可阐述毕业设计、课题和方向",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_basicInfo_hasRelative",
+        "name": "",
+        "label": "有近亲属在集团任职",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_basicInfo_hasRelative"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "有近亲属在集团任职",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "关系类型",
+        "section": "",
+        "placeholder": "",
+        "key": "关系类型"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "关系类型",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": "父亲"
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_0_name",
+        "name": "",
+        "label": "姓名",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_familyList_0_name"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "姓名",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_0_workInMerchantsGroup",
+        "name": "",
+        "label": "在集团任职",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_familyList_0_workInMerchantsGroup"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "在集团任职",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "未搜索到选项，自行填写",
+        "section": "工作单位 未搜索到选项，自行填写",
+        "placeholder": "",
+        "key": "未搜索到选项，自行填写"
+      },
+      "kind": "checkbox",
+      "tag": "input",
+      "label": "未搜索到选项，自行填写",
+      "section": "工作单位 未搜索到选项，自行填写",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "工作单位未搜索到选项，自行填写",
+        "section": "工作单位 未搜索到选项，自行填写",
+        "placeholder": "请输入关键字搜索",
+        "key": "工作单位未搜索到选项，自行填写"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "工作单位未搜索到选项，自行填写",
+      "section": "工作单位 未搜索到选项，自行填写",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入关键字搜索",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_0_position",
+        "name": "",
+        "label": "职位/职务",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_familyList_0_position"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职位/职务",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_0_phone",
+        "name": "",
+        "label": "联系电话",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_familyList_0_phone"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "联系电话",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "关系类型",
+        "section": "",
+        "placeholder": "",
+        "key": "关系类型"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "关系类型",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": "母亲"
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_1_name",
+        "name": "",
+        "label": "姓名",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_familyList_1_name"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "姓名",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_1_workInMerchantsGroup",
+        "name": "",
+        "label": "在集团任职",
+        "section": "",
+        "placeholder": "",
+        "key": "resume_familyList_1_workInMerchantsGroup"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "在集团任职",
+      "section": "",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "未搜索到选项，自行填写",
+        "section": "工作单位 未搜索到选项，自行填写",
+        "placeholder": "",
+        "key": "未搜索到选项，自行填写"
+      },
+      "kind": "checkbox",
+      "tag": "input",
+      "label": "未搜索到选项，自行填写",
+      "section": "工作单位 未搜索到选项，自行填写",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "工作单位未搜索到选项，自行填写",
+        "section": "工作单位 未搜索到选项，自行填写",
+        "placeholder": "请输入关键字搜索",
+        "key": "工作单位未搜索到选项，自行填写"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "工作单位未搜索到选项，自行填写",
+      "section": "工作单位 未搜索到选项，自行填写",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入关键字搜索",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_1_position",
+        "name": "",
+        "label": "职位/职务",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_familyList_1_position"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职位/职务",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_familyList_1_phone",
+        "name": "",
+        "label": "联系电话",
+        "section": "",
+        "placeholder": "请输入",
+        "key": "resume_familyList_1_phone"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "联系电话",
+      "section": "",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "最高英语水平",
+        "section": "技能水平",
+        "placeholder": "请选择",
+        "key": "最高英语水平"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "最高英语水平",
+      "section": "技能水平",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_skill_0_englishScore",
+        "name": "",
+        "label": "分数",
+        "section": "技能水平",
+        "placeholder": "请输入",
+        "key": "resume_skill_0_englishScore"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "分数",
+      "section": "技能水平",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_skill_0_computerSkill",
+        "name": "",
+        "label": "计算机水平可选",
+        "section": "技能水平",
+        "placeholder": "请输入",
+        "key": "resume_skill_0_computerSkill"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "计算机水平可选",
+      "section": "技能水平",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_skill_0_otherSituation",
+        "name": "",
+        "label": "其他可选",
+        "section": "技能水平",
+        "placeholder": "请输入爱好、特长或特别技能",
+        "key": "resume_skill_0_otherSituation"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "其他可选",
+      "section": "技能水平",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入爱好、特长或特别技能",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_0_companyName",
+        "name": "",
+        "label": "公司或组织",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_0_companyName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "公司或组织",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_0_city",
+        "name": "",
+        "label": "所在城市",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_0_city"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "所在城市",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_0_jobResponsibility",
+        "name": "",
+        "label": "职位或职责",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_0_jobResponsibility"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职位或职责",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_0_hrContact",
+        "name": "",
+        "label": "单位联系人",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_0_hrContact"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "单位联系人",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_0_hrPhone",
+        "name": "",
+        "label": "单位联系电话",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_0_hrPhone"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "单位联系电话",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_0_formal",
+        "name": "",
+        "label": "正式工作",
+        "section": "实践经历",
+        "placeholder": "",
+        "key": "resume_internshipExperienceList_0_formal"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "正式工作",
+      "section": "实践经历",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_0_practiceContent",
+        "name": "",
+        "label": "内容与收获",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_0_practiceContent"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "内容与收获",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_1_companyName",
+        "name": "",
+        "label": "公司或组织",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_1_companyName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "公司或组织",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_1_city",
+        "name": "",
+        "label": "所在城市",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_1_city"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "所在城市",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_1_jobResponsibility",
+        "name": "",
+        "label": "职位或职责",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_1_jobResponsibility"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职位或职责",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_1_hrContact",
+        "name": "",
+        "label": "单位联系人",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_1_hrContact"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "单位联系人",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_1_hrPhone",
+        "name": "",
+        "label": "单位联系电话",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_1_hrPhone"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "单位联系电话",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_1_formal",
+        "name": "",
+        "label": "正式工作",
+        "section": "实践经历",
+        "placeholder": "",
+        "key": "resume_internshipExperienceList_1_formal"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "正式工作",
+      "section": "实践经历",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_1_practiceContent",
+        "name": "",
+        "label": "内容与收获",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_1_practiceContent"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "内容与收获",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_2_companyName",
+        "name": "",
+        "label": "公司或组织",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_2_companyName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "公司或组织",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_2_city",
+        "name": "",
+        "label": "所在城市",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_2_city"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "所在城市",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_2_jobResponsibility",
+        "name": "",
+        "label": "职位或职责",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_2_jobResponsibility"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职位或职责",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_2_hrContact",
+        "name": "",
+        "label": "单位联系人",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_2_hrContact"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "单位联系人",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_2_hrPhone",
+        "name": "",
+        "label": "单位联系电话",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_2_hrPhone"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "单位联系电话",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_2_formal",
+        "name": "",
+        "label": "正式工作",
+        "section": "实践经历",
+        "placeholder": "",
+        "key": "resume_internshipExperienceList_2_formal"
+      },
+      "kind": "radio",
+      "tag": "div",
+      "label": "正式工作",
+      "section": "实践经历",
+      "required": false,
+      "options": [
+        {
+          "text": "是",
+          "value": "true"
+        },
+        {
+          "text": "否",
+          "value": "false"
+        }
+      ],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_internshipExperienceList_2_practiceContent",
+        "name": "",
+        "label": "内容与收获",
+        "section": "实践经历",
+        "placeholder": "请输入",
+        "key": "resume_internshipExperienceList_2_practiceContent"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "内容与收获",
+      "section": "实践经历",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "荣誉类型",
+        "section": "个人荣誉",
+        "placeholder": "请选择",
+        "key": "荣誉类型"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "荣誉类型",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_awardList_0_awardName",
+        "name": "",
+        "label": "奖项名称",
+        "section": "个人荣誉",
+        "placeholder": "请输入",
+        "key": "resume_awardList_0_awardName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "奖项名称",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "获奖级别",
+        "section": "个人荣誉",
+        "placeholder": "请选择",
+        "key": "获奖级别"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "获奖级别",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "获奖时间",
+        "section": "个人荣誉",
+        "placeholder": "",
+        "key": "获奖时间"
+      },
+      "kind": "date",
+      "tag": "div",
+      "label": "获奖时间",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "荣誉类型",
+        "section": "个人荣誉",
+        "placeholder": "请选择",
+        "key": "荣誉类型"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "荣誉类型",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_awardList_1_awardName",
+        "name": "",
+        "label": "奖项名称",
+        "section": "个人荣誉",
+        "placeholder": "请输入",
+        "key": "resume_awardList_1_awardName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "奖项名称",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "获奖级别",
+        "section": "个人荣誉",
+        "placeholder": "请选择",
+        "key": "获奖级别"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "获奖级别",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "获奖时间",
+        "section": "个人荣誉",
+        "placeholder": "",
+        "key": "获奖时间"
+      },
+      "kind": "date",
+      "tag": "div",
+      "label": "获奖时间",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "荣誉类型",
+        "section": "个人荣誉",
+        "placeholder": "请选择",
+        "key": "荣誉类型"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "荣誉类型",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_awardList_2_awardName",
+        "name": "",
+        "label": "奖项名称",
+        "section": "个人荣誉",
+        "placeholder": "请输入",
+        "key": "resume_awardList_2_awardName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "奖项名称",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "获奖级别",
+        "section": "个人荣誉",
+        "placeholder": "请选择",
+        "key": "获奖级别"
+      },
+      "kind": "dropdown",
+      "tag": "div",
+      "label": "获奖级别",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "请选择",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "获奖时间",
+        "section": "个人荣誉",
+        "placeholder": "",
+        "key": "获奖时间"
+      },
+      "kind": "date",
+      "tag": "div",
+      "label": "获奖时间",
+      "section": "个人荣誉",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_0_communityName",
+        "name": "",
+        "label": "社团名称",
+        "section": "社团活动",
+        "placeholder": "请输入",
+        "key": "resume_clubActivityList_0_communityName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "社团名称",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_0_schoolOfficeName",
+        "name": "",
+        "label": "职务名称",
+        "section": "社团活动",
+        "placeholder": "请输入",
+        "key": "resume_clubActivityList_0_schoolOfficeName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职务名称",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_0_schoolOfficeDescription",
+        "name": "",
+        "label": "活动描述",
+        "section": "社团活动",
+        "placeholder": "可列举参加过的大型活动",
+        "key": "resume_clubActivityList_0_schoolOfficeDescription"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "活动描述",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "可列举参加过的大型活动",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_1_communityName",
+        "name": "",
+        "label": "社团名称",
+        "section": "社团活动",
+        "placeholder": "请输入",
+        "key": "resume_clubActivityList_1_communityName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "社团名称",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_1_schoolOfficeName",
+        "name": "",
+        "label": "职务名称",
+        "section": "社团活动",
+        "placeholder": "请输入",
+        "key": "resume_clubActivityList_1_schoolOfficeName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职务名称",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_1_schoolOfficeDescription",
+        "name": "",
+        "label": "活动描述",
+        "section": "社团活动",
+        "placeholder": "可列举参加过的大型活动",
+        "key": "resume_clubActivityList_1_schoolOfficeDescription"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "活动描述",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "可列举参加过的大型活动",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_2_communityName",
+        "name": "",
+        "label": "社团名称",
+        "section": "社团活动",
+        "placeholder": "请输入",
+        "key": "resume_clubActivityList_2_communityName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "社团名称",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_2_schoolOfficeName",
+        "name": "",
+        "label": "职务名称",
+        "section": "社团活动",
+        "placeholder": "请输入",
+        "key": "resume_clubActivityList_2_schoolOfficeName"
+      },
+      "kind": "text",
+      "tag": "input",
+      "label": "职务名称",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "请输入",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "resume_clubActivityList_2_schoolOfficeDescription",
+        "name": "",
+        "label": "活动描述",
+        "section": "社团活动",
+        "placeholder": "可列举参加过的大型活动",
+        "key": "resume_clubActivityList_2_schoolOfficeDescription"
+      },
+      "kind": "textarea",
+      "tag": "textarea",
+      "label": "活动描述",
+      "section": "社团活动",
+      "required": false,
+      "options": [],
+      "placeholder": "可列举参加过的大型活动",
+      "current_value": ""
+    },
+    {
+      "anchor": {
+        "id": "",
+        "name": "",
+        "label": "姓名",
+        "section": "解析简历",
+        "placeholder": "",
+        "key": "姓名"
+      },
+      "kind": "checkbox",
+      "tag": "input",
+      "label": "姓名",
+      "section": "解析简历",
+      "required": false,
+      "options": [],
+      "placeholder": "",
+      "current_value": ""
+    }
+  ]
+}

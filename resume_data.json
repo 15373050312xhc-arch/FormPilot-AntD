@@ -1,0 +1,112 @@
+{
+  "name": "张三",
+  "gender": "男",
+  "height_cm": 175,
+  "weight_kg": 70,
+  "phone": "13800138000",
+  "email": "example@example.com",
+  "wechat": "",
+  "birth_date": "2000-01-01",
+  "marital_status": "未婚",
+  "political_status": "共青团员",
+  "id_number": "110101200001012345",
+  "hobbies": "阅读、跑步、编程",
+  "current_location": "北京市海淀区",
+  "ethnicity": "汉族",
+  "address": "北京市海淀区",
+  "postal_code": "",
+  "hukou_location": "北京市",
+  "birthplace": "北京市",
+  "hukou_type": "",
+  "preferred_work_location": "",
+  "accept_work_location_adjustment": "",
+  "education": [
+    {
+      "start_date": "2023-09-01",
+      "end_date": "2026-06-30",
+      "is_abroad": "否",
+      "school": "示例大学",
+      "major": "计算机科学与技术",
+      "degree": "硕士",
+      "study_type": "全日制",
+      "ranking": ""
+    },
+    {
+      "start_date": "2019-09-01",
+      "end_date": "2023-06-30",
+      "is_abroad": "否",
+      "school": "示例大学",
+      "major": "软件工程",
+      "degree": "本科",
+      "study_type": "全日制",
+      "ranking": ""
+    }
+  ],
+  "internships": [
+    {
+      "start_date": "2024-06-01",
+      "end_date": "2024-09-30",
+      "company": "示例科技有限公司",
+      "position": "前端开发实习生",
+      "department": "技术部",
+      "reference": "",
+      "responsibilities": "参与公司核心产品的前端开发工作，使用 React + TypeScript 技术栈。负责组件库维护和功能模块开发，累计提交代码 50+ 次。与后端团队协作完成 API 对接和数据联调。"
+    }
+  ],
+  "student_work": [
+    {
+      "start_date": "2020-09-01",
+      "end_date": "2021-06-30",
+      "level": "校级",
+      "role": "学生会技术部成员",
+      "description": "负责学校活动的技术支持工作，包括活动现场设备调试、活动网站维护等。参与组织 3 场校级技术沙龙活动。"
+    }
+  ],
+  "awards": [
+    {
+      "issuer": "示例大学",
+      "date": "",
+      "level": "校级",
+      "name": "示例大学校级一等奖学金",
+      "reason": ""
+    },
+    {
+      "issuer": "全国大学生计算机竞赛",
+      "date": "",
+      "level": "全国",
+      "name": "全国大学生程序设计竞赛二等奖",
+      "reason": ""
+    }
+  ],
+  "certificates": [
+    "大学英语六级证书",
+    "计算机二级证书"
+  ],
+  "language_tests": {
+    "cet4": "",
+    "cet6": "已取得证书",
+    "toefl": "",
+    "ielts": "",
+    "gre": "",
+    "gmat": "",
+    "english_as_work_language": ""
+  },
+  "computer_skill": "已取得计算机二级证书",
+  "other_skills": "熟悉 Python、JavaScript、React 等技术栈",
+  "projects": [
+    {
+      "start_date": "2024-03-01",
+      "end_date": "2024-06-30",
+      "name": "校园二手交易平台",
+      "role": "项目负责人",
+      "description": "基于 React + Node.js 的校园二手物品交易平台，支持商品发布、搜索、在线沟通等功能。",
+      "responsibilities": "负责项目整体架构设计和核心功能开发，带领 4 人团队完成项目从 0 到 1 的落地。"
+    }
+  ],
+  "disciplinary_records": "",
+  "family_members": [],
+  "application_reason": "对贵公司的发展前景和企业文化非常认同，希望能够加入贵公司，为公司的发展贡献自己的力量。",
+  "self_evaluation": "计算机专业硕士在读，具备扎实的编程基础和项目实战经验。在校期间担任学生会技术部成员，具备良好的团队协作和沟通能力。通过实习积累了企业级前端开发经验，能够快速适应工作环境。",
+  "other_notes": "",
+  "questions": {}
+}
