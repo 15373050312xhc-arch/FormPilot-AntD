@@ -1,5 +1,7 @@
 # FormPilot-AntD — LLM-Agnostic Form Autofill for Ant Design
 
+> 🎮 **[Try the live demo!](https://15373050312xhc-arch.github.io/FormPilot-AntD/demo.html)** — a full Ant Design recruitment form you can dump+apply against, no login or target site needed.
+
 Fill long job-application forms in seconds, not hours. FormPilot-AntD extracts any Ant Design form's schema, lets you plan fills with any LLM you already use (Doubao, DeepSeek, Kimi, ChatGPT, Claude — your choice), then replays the plan into the live page — **no API key, no cloud calls, no per-fill cost.**
 
 ## Why FormPilot-AntD
