@@ -1,5 +1,14 @@
 # FormPilot-AntD — LLM-Agnostic Form Autofill for Ant Design
 
+[![Version](https://img.shields.io/github/v/release/15373050312xhc-arch/FormPilot-AntD?style=flat&color=7c3aed&label=version)](https://github.com/15373050312xhc-arch/FormPilot-AntD/releases)
+[![License](https://img.shields.io/badge/license-MIT-059669?style=flat)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/15373050312xhc-arch/FormPilot-AntD?style=flat&color=yellow&label=stars)](https://github.com/15373050312xhc-arch/FormPilot-AntD/stargazers)
+[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![Playwright](https://img.shields.io/badge/Playwright-2A5ADA?style=flat&logo=playwright&logoColor=white)](https://playwright.dev)
+[![Ant Design](https://img.shields.io/badge/Ant_Design-017FE?style=flat&logo=antdesign&logoColor=white)](https://ant.design)
+[![Demo](https://img.shields.io/badge/🌐_Live_Demo-try_now-7c3aed?style=flat)](https://15373050312xhc-arch.github.io/FormPilot-AntD/demo.html)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-059669?style=flat)](CONTRIBUTING.md)
+
 > 🎮 **[Try the live demo!](https://15373050312xhc-arch.github.io/FormPilot-AntD/demo.html)** — a full Ant Design recruitment form you can dump+apply against, no login or target site needed.
 
 Fill long job-application forms in seconds, not hours. FormPilot-AntD extracts any Ant Design form's schema, lets you plan fills with any LLM you already use (Doubao, DeepSeek, Kimi, ChatGPT, Claude — your choice), then replays the plan into the live page — **no API key, no cloud calls, no per-fill cost.**
