@@ -2450,7 +2450,7 @@ def _print_profile_status(profile_dir: Path, fresh_profile: bool = False) -> Non
         return
 
     has_profile = profile_dir.exists() and any(profile_dir.iterdir())
-    # cookies 备份在 outputs/saved_cookies.json（和本脚本同目录）
+    # cookies 备份在和本脚本同目录的 saved_cookies.json
     cookie_backup = Path(__file__).parent / "saved_cookies.json"
     has_cookie_backup = cookie_backup.exists() and cookie_backup.stat().st_size > 10
 

@@ -592,7 +592,7 @@ def dump_schema(page, out_dir: Path) -> dict:
     print("2. 把简历 JSON 粘贴到末尾指定位置")
     print("3. 整段复制发给豆包/DeepSeek/Kimi（精简表单结构已内嵌在 prompt 里）")
     print(f"   备用：如果客户端支持文件上传，可上传 {outline_path.name}")
-    print("4. 拿到模型返回的 JSON，保存为 form_plan.json（放在 outputs/ 下）")
+    print("4. 拿到模型返回的 JSON，保存为 form_plan.json（和本脚本同目录）")
     print("5. 重新运行 RUN.cmd → v3 → [2] 按计划填表")
     print("=" * 60)
 
@@ -601,7 +601,7 @@ def dump_schema(page, out_dir: Path) -> dict:
 
 def build_prompt(fields: list[dict], html_size: int = 0, outline: str = "") -> str:
     """拼装发送给 LLM 的提示词。精简 outline 直接嵌入，不依赖附件上传。"""
-    # 读取候选人简历 JSON（固定存放在 outputs/resume_data.json）
+    # 读取候选人简历 JSON（和本脚本同目录的 resume_data.json）
     resume_path = SCRIPT_DIR / "resume_data.json"
     resume_json = ""
     if resume_path.exists():
