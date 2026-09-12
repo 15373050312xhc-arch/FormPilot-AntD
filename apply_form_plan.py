@@ -151,6 +151,8 @@ STAMP_UID_BY_ID_JS = r"""
     el.classList.contains('ant-picker') ||
     el.classList.contains('ant-radio-group') ||
     el.classList.contains('ant-cascader') ||
+    el.classList.contains('ant-cascader-picker') ||
+    el.classList.contains('ant-calendar-picker') ||
     el.classList.contains('el-select') ||
     el.classList.contains('el-date-editor') ||
     el.classList.contains('el-radio-group') ||
@@ -179,13 +181,24 @@ STAMP_UID_BY_ID_JS = r"""
       };
     }
     // ant-picker 内部 input → 向上找 .ant-picker
-    const parentPicker = el.closest('.ant-picker, .el-date-editor');
+    const parentPicker = el.closest('.ant-picker, .ant-calendar-picker, .el-date-editor');
     if (parentPicker) {
       parentPicker.setAttribute('data-resume-autofill-id', uid);
       return {
         ok: true,
         tag: parentPicker.tagName.toLowerCase(),
         className: String(parentPicker.className || '').slice(0, 80),
+        isContainer: true,
+      };
+    }
+    // ant-cascader / el-cascader 内部 input → 向上找 .ant-cascader / .el-cascader ⚠️ 关键修复
+    const parentCascader = el.closest('.ant-cascader, .ant-cascader-picker, .el-cascader');
+    if (parentCascader) {
+      parentCascader.setAttribute('data-resume-autofill-id', uid);
+      return {
+        ok: true,
+        tag: parentCascader.tagName.toLowerCase(),
+        className: String(parentCascader.className || '').slice(0, 80),
         isContainer: true,
       };
     }
@@ -212,7 +225,7 @@ STAMP_UID_BY_ID_JS = r"""
 
   // 4. 其他：向上找容器 stamp
   const container = el.closest(
-    '.ant-form-item, .ant-select, .ant-picker, .ant-radio-group, .el-select, .el-date-editor, .el-radio-group, .ant-cascader, .el-cascader'
+    '.ant-form-item, .ant-select, .ant-picker, .ant-calendar-picker, .ant-radio-group, .el-select, .el-date-editor, .el-radio-group, .ant-cascader, .ant-cascader-picker, .el-cascader'
   );
   const finalTarget = container || el;
   finalTarget.setAttribute('data-resume-autofill-id', uid);
@@ -237,6 +250,69 @@ STAMP_UID_BY_LABEL_JS = r"""
   const targetLabel = norm(label);
   if (!targetLabel) return { ok: false, error: 'empty_label' };
 
+  // ── 通用 label 文本提取（结构启发式，不依赖具体类名）──
+  const getLabelText = (el) => {
+    // 1. label[for=id] — HTML 标准
+    if (el.id) {
+      const lb = document.querySelector(`label[for="${CSS.escape(el.id)}"]`);
+      if (lb) return text(lb);
+    }
+    // 2. aria-label — 无障碍标准
+    const aria = el.getAttribute('aria-label');
+    if (aria) return aria;
+    // 3. aria-labelledby
+    const lbBy = el.getAttribute('aria-labelledby');
+    if (lbBy) {
+      const n = document.getElementById(lbBy.split(/\s+/)[0]);
+      if (n) return text(n);
+    }
+    // 4. 被 <label> 包裹
+    const wrapped = el.closest('label');
+    if (wrapped) return text(wrapped);
+    // 5. 结构启发式：前一个兄弟节点（label 常在 input 左侧/上方，作为兄弟元素）
+    let probe = el;
+    for (let i = 0; probe && i < 6; i++, probe = probe.parentElement) {
+      const prev = probe.previousElementSibling;
+      if (prev) {
+        const t = text(prev);
+        const clean = t.replace(/[*＊：:\s]/g, '');
+        // 只取短文本（1-20字），长文本多半是描述不是标签
+        if (clean && clean.length >= 1 && clean.length <= 20) return t;
+      }
+    }
+    // 6. 结构启发式：字段容器内第一个短文本节点（不依赖类名）
+    const container = el.closest(
+      'li, tr, .form-item, .form-group, .ant-form-item, .el-form-item, '
+      + '[class*="field"], [class*="item"], [class*="form"]'
+    );
+    if (container) {
+      const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) => {
+          if (el.contains(node)) return NodeFilter.FILTER_REJECT;
+          const t = node.textContent.replace(/\s+/g, ' ').trim();
+          if (!t) return NodeFilter.FILTER_REJECT;
+          if (t.length > 30) return NodeFilter.FILTER_REJECT; // 跳过描述性长文本
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const first = walker.nextNode();
+      if (first) return first.textContent;
+    }
+    // 7. 类名兜底（Ant Design / Element UI 等已知框架）
+    let p = el.parentElement;
+    for (let i = 0; p && i < 6; i++, p = p.parentElement) {
+      const ll = p.querySelector(
+        '.ant-form-item-label, .el-form-item__label, .layui-form-label, '
+        + '.aply-field-label, label'
+      );
+      if (ll) {
+        const t = text(ll);
+        if (t) return t;
+      }
+    }
+    return '';
+  };
+
   // 遍历所有可能的 input/textarea/select/容器
   const selectors = [
     'input:not([type=hidden]):not([type=button]):not([type=submit]):not([type=reset])',
@@ -246,6 +322,8 @@ STAMP_UID_BY_LABEL_JS = r"""
     '.ant-picker',
     '.ant-radio-group',
     '.ant-cascader',
+    '.ant-cascader-picker',
+    '.ant-calendar-picker',
     '.el-select',
     '.el-date-editor',
     '.el-radio-group',
@@ -254,52 +332,56 @@ STAMP_UID_BY_LABEL_JS = r"""
   ];
 
   const all = Array.from(document.querySelectorAll(selectors.join(',')));
-  // 排除嵌套（同一容器内的子 input 跳过，只保留容器）
   const visible = all.filter(el => {
     const s = getComputedStyle(el);
     const r = el.getBoundingClientRect();
     return s.visibility !== 'hidden' && s.display !== 'none' && r.width > 0 && r.height > 0;
   }).filter(el => {
-    // 跳过被容器包裹的子 input（如果存在父容器也在候选里）
-    return !el.closest('.ant-select, .ant-picker, .ant-radio-group, .ant-cascader, .el-select, .el-date-editor, .el-radio-group, .el-cascader')
-                    || ['TEXTAREA', 'SELECT', 'INPUT'].indexOf(el.tagName) === -1;
+    const isControlContainer = (() => {
+      try {
+        return el.matches(
+          '.ant-select, .ant-picker, .ant-calendar-picker, .ant-radio-group, .ant-cascader, .ant-cascader-picker, '
+          + '.el-select, .el-date-editor, .el-radio-group, .el-cascader'
+        );
+      } catch(e) { return false; }
+    })();
+    if (isControlContainer) return true;
+
+    if (['TEXTAREA', 'SELECT', 'INPUT'].indexOf(el.tagName) !== -1) {
+      return !el.closest('.ant-select, .ant-picker, .ant-calendar-picker, .ant-radio-group, .ant-cascader, .ant-cascader-picker, .el-select, .el-date-editor, .el-radio-group, .el-cascader');
+    }
+
+    const hasInnerControl = el.querySelector(
+      '.ant-select, .ant-picker, .ant-calendar-picker, .ant-radio-group, .ant-cascader, .ant-cascader-picker, '
+      + '.el-select, .el-date-editor, .el-radio-group, .el-cascader'
+    );
+    if (hasInnerControl) return false;
+
+    return true;
   });
 
   for (const el of visible) {
-    // 在祖先链里找 label 文本匹配
-    let probe = el;
-    for (let i = 0; probe && i < 6; i++, probe = probe.parentElement) {
-      // label[for=] 模式
-      if (el.id) {
-        const lb = probe.querySelector(`label[for="${CSS.escape(el.id)}"]`);
-        if (lb && norm(text(lb)).includes(targetLabel)) {
-          el.setAttribute('data-resume-autofill-id', uid);
-          return { ok: true, tag: el.tagName.toLowerCase(), className: String(el.className || '').slice(0, 80) };
-        }
-      }
-      // .ant-form-item-label 等
-      const labelEl = probe.querySelector('.ant-form-item-label, .el-form-item__label, .layui-form-label, label');
-      if (labelEl) {
-        const lt = norm(text(labelEl));
-        if (lt && lt.includes(targetLabel)) {
-          // 校验 section（如果给了）
-          if (section) {
-            const targetSection = norm(section);
-            let sectionProbe = el;
-            let sectionMatch = false;
-            for (let j = 0; sectionProbe && j < 12; j++, sectionProbe = sectionProbe.parentElement) {
-              const itemName = sectionProbe.querySelector('.item-name, .section-name, h1, h2, h3, h4, h5, h6');
-              if (itemName && norm(text(itemName)).includes(targetSection)) {
-                sectionMatch = true;
-                break;
-              }
-            }
-            if (!sectionMatch) continue;
+    const lt = norm(getLabelText(el));
+    if (lt && lt.includes(targetLabel)) {
+      // 校验 section（如果给了）
+      if (section) {
+        const targetSection = norm(section);
+        let sectionProbe = el;
+        let sectionMatch = false;
+        for (let j = 0; sectionProbe && j < 12; j++, sectionProbe = sectionProbe.parentElement) {
+          const itemName = sectionProbe.querySelector('.item-name, .section-name, h1, h2, h3, h4, h5, h6');
+          if (itemName && norm(text(itemName)).includes(targetSection)) {
+            sectionMatch = true;
+            break;
           }
-          el.setAttribute('data-resume-autofill-id', uid);
-          return { ok: true, tag: el.tagName.toLowerCase(), className: String(el.className || '').slice(0, 80) };
         }
+        if (!sectionMatch) continue;
       }
+      // 如果 el 是控件容器内部的 input，stamp 容器本身（cascader/date/select）
+      const wrap = el.closest('.ant-select, .ant-picker, .ant-calendar-picker, .ant-cascader, .ant-cascader-picker, .el-select, .el-date-editor, .el-cascader');
+      const target = wrap || el;
+      target.setAttribute('data-resume-autofill-id', uid);
+      return { ok: true, tag: target.tagName.toLowerCase(), className: String(target.className || '').slice(0, 80) };
     }
   }
   return { ok: false, error: 'label_not_found' };
@@ -377,6 +459,64 @@ def stamp_uid_by_anchor(page, fill: dict, uid: str) -> tuple[bool, str]:
     return False, "anchor_not_found"
 
 
+# ─────────────────────────────────────────────────────────
+# JS：禁用文件上传组件（防止填表误触弹出选择框）
+# ─────────────────────────────────────────────────────────
+
+DISABLE_FILE_UPLOAD_JS = r"""
+() => {
+  const saved = [];
+  // 1. 隐藏所有 input[type="file"]
+  document.querySelectorAll('input[type="file"]').forEach((el, i) => {
+    const key = `arf_file_disabled_${i}`;
+    saved.push({ el, display: el.style.display, visibility: el.style.visibility, pe: el.style.pointerEvents });
+    el.style.display = 'none';
+    el.setAttribute('data-arf-hidden-by', 'resume-autofill');
+  });
+  // 2. 给常见上传容器加 pointer-events:none（整个上传区域也禁用点击）
+  const uploadSelectors = [
+    '.ant-upload', '.el-upload', '.upload', '.uploader',
+    '[class*="upload"]', '[class*="Upload"]',
+    '.file-upload', '.fileupload',
+    'a[href*="upload"]',
+  ];
+  document.querySelectorAll(uploadSelectors.join(',')).forEach((el, i) => {
+    if (el.getAttribute('data-arf-pe-disabled')) return;
+    el.setAttribute('data-arf-pe-disabled', '1');
+    const key = `arf_upload_pe_${i}`;
+    if (!window.__arf_upload_saved) window.__arf_upload_saved = [];
+    window.__arf_upload_saved.push({ el, pe: el.style.pointerEvents });
+    el.style.pointerEvents = 'none';
+  });
+  return true;
+}
+"""
+
+RESTORE_FILE_UPLOAD_JS = r"""
+() => {
+  document.querySelectorAll('input[type="file"][data-arf-hidden-by="resume-autofill"]').forEach(el => {
+    el.removeAttribute('data-arf-hidden-by');
+  });
+  document.querySelectorAll('[data-arf-pe-disabled="1"]').forEach(el => {
+    el.removeAttribute('data-arf-pe-disabled');
+    el.style.pointerEvents = '';
+  });
+  return true;
+}
+"""
+
+SAFE_BODY_CLICK_JS = r"""
+() => {
+  // 用 JS 原生 click 事件关掉下拉/弹层，不触发浏览器原生文件选择框
+  document.body.click();
+  // 同时按 Esc 也能关掉很多弹层
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape', bubbles: true }));
+  return true;
+}
+"""
+
+
 def _dispatch_fill(page: Any, kind: str, field: dict, value: str) -> bool:
     """按 kind 分发到对应的 fill_* 函数。"""
     if kind in ("text", "textarea"):
@@ -428,6 +568,13 @@ def apply_plan(page, plan: dict) -> dict:
         page.set_default_timeout(8000)
     except Exception:
         pass
+
+    # ⚠️ 关键防护：填表前禁用所有文件上传组件，防止 Playwright 真实 click 误触弹出选择框
+    try:
+        page.evaluate(DISABLE_FILE_UPLOAD_JS)
+        print("[safety] 已禁用页面文件上传组件")
+    except Exception as exc:
+        print(f"[safety] 禁用上传组件失败（不影响主要流程）: {exc}")
 
     results = {"filled": [], "skipped": [], "failed": []}
     set_widget_status(
@@ -503,7 +650,7 @@ def apply_plan(page, plan: dict) -> dict:
                 "anchor_id": anchor_id, "value": effective_value, "error": str(exc), "note": note,
             })
             try:
-                page.locator("body").click()  # 关掉可能开着的下拉
+                page.evaluate(SAFE_BODY_CLICK_JS)
                 page.wait_for_timeout(150)
             except Exception:
                 pass
@@ -533,9 +680,9 @@ def apply_plan(page, plan: dict) -> dict:
             })
 
         page.wait_for_timeout(250)
-        # 关掉残留的弹层
+        # 关掉残留的弹层（用 JS 版本，避免误触文件上传）
         try:
-            page.locator("body").click()
+            page.evaluate(SAFE_BODY_CLICK_JS)
             page.wait_for_timeout(80)
         except Exception:
             pass
@@ -544,6 +691,13 @@ def apply_plan(page, plan: dict) -> dict:
     n_ok = len(results["filled"])
     n_skip = len(results["skipped"])
     n_fail = len(results["failed"])
+
+    # 恢复文件上传组件（填表完了）
+    try:
+        page.evaluate(RESTORE_FILE_UPLOAD_JS)
+        print("[safety] 已恢复页面文件上传组件")
+    except Exception:
+        pass
     print()
     print("=" * 60)
     print(f"[apply] 完成：{n_ok} 成功 / {n_skip} 跳过 / {n_fail} 失败")

@@ -67,7 +67,7 @@ async () => {
     let probe = el.parentElement;
     for (let i = 0; probe && i < 5; i++, probe = probe.parentElement) {
       const ll = probe.querySelector(
-        '.ant-form-item-label, .el-form-item__label, .layui-form-label, label'
+        '.ant-form-item-label, .el-form-item__label, .layui-form-label, .aply-field-label, label'
       );
       if (ll) cands.push(clean(text(ll)));
       const prev = probe.previousElementSibling;
@@ -109,7 +109,7 @@ async () => {
       const prev = probe.previousElementSibling;
       if (prev) parts.push(text(prev).slice(0, 120));
       const ll = probe.querySelector(
-        '.ant-form-item-label, .el-form-item__label, .layui-form-label, label'
+        '.ant-form-item-label, .el-form-item__label, .layui-form-label, .aply-field-label, label'
       );
       if (ll) parts.push(text(ll).slice(0, 120));
     }
@@ -244,6 +244,7 @@ async () => {
     '.ant-select',
     '.ant-calendar-picker',
     '.ant-picker',
+    '.ant-cascader-picker',
     '.el-select',
     '.el-date-editor',
     '.ant-radio-group',
@@ -260,6 +261,7 @@ async () => {
     if (!isVisible(el) || el.disabled) continue;
     if (el.closest('.ant-select') && !el.classList.contains('ant-select')) continue;
     if (el.closest('.ant-calendar-picker') && !el.classList.contains('ant-calendar-picker')) continue;
+    if (el.closest('.ant-cascader-picker') && !el.classList.contains('ant-cascader-picker')) continue;
     if (el.closest('.ant-picker') && !el.classList.contains('ant-picker')) continue;
     if (el.closest('.el-select') && !el.classList.contains('el-select')) continue;
     if (el.closest('.el-date-editor') && !el.classList.contains('el-date-editor')) continue;
@@ -284,7 +286,7 @@ async () => {
         value: o.value,
         text: text(o) || o.label || o.value,
       }));
-    } else if (el.classList.contains('ant-cascader')) {
+    } else if (el.classList.contains('ant-cascader') || el.classList.contains('ant-cascader-picker')) {
       fieldType = 'cascader';
     } else if (isCustomDropdown(el)) {
       fieldType = 'custom-dropdown';
@@ -498,6 +500,63 @@ SET_WIDGET_STATUS_JS = r"""
   return true;
 }
 """
+
+
+# ─────────────────────────────────────────────────────────
+# Safety: 禁用文件上传组件（防止 Playwright click 误触弹出选择框）
+# ─────────────────────────────────────────────────────────
+
+DISABLE_FILE_UPLOAD_JS = r"""
+() => {
+  // 1. 隐藏所有 input[type="file"]
+  document.querySelectorAll('input[type="file"]').forEach((el) => {
+    el.style.display = 'none';
+    el.setAttribute('data-arf-hidden-by', 'resume-autofill');
+  });
+  // 2. 给常见上传容器加 pointer-events:none
+  const uploadSelectors = [
+    '.ant-upload', '.el-upload', '.upload', '.uploader',
+    '[class*="upload"]', '[class*="Upload"]',
+    '.file-upload', '.fileupload',
+  ];
+  document.querySelectorAll(uploadSelectors.join(',')).forEach((el) => {
+    if (el.getAttribute('data-arf-pe-disabled')) return;
+    el.setAttribute('data-arf-pe-disabled', '1');
+    el.style.pointerEvents = 'none';
+  });
+  return true;
+}
+"""
+
+RESTORE_FILE_UPLOAD_JS = r"""
+() => {
+  document.querySelectorAll('input[type="file"][data-arf-hidden-by="resume-autofill"]').forEach(el => {
+    el.removeAttribute('data-arf-hidden-by');
+  });
+  document.querySelectorAll('[data-arf-pe-disabled="1"]').forEach(el => {
+    el.removeAttribute('data-arf-pe-disabled');
+    el.style.pointerEvents = '';
+  });
+  return true;
+}
+"""
+
+SAFE_BODY_CLICK_JS = r"""
+() => {
+  document.body.click();
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape', bubbles: true }));
+  return true;
+}
+"""
+
+
+def safe_body_click(page: Any) -> None:
+    """安全地"点击 body"来关闭弹层 —— 用 JS 实现，不会误触文件上传等敏感元素。"""
+    try:
+        page.evaluate(SAFE_BODY_CLICK_JS)
+    except Exception:
+        pass
 
 
 # ─────────────────────────────────────────────────────────
@@ -1342,56 +1401,164 @@ def extract_dropdown_options(page: Any, field: dict) -> list[dict]:
             return options
     except Exception as exc:
         print(f"  dropdown option extraction failed: {exc}")
-        try:
-            page.locator("body").click()
-        except Exception:
-            pass
+        safe_body_click(page)
     return []
 
 
 def fill_cascader_field(page: Any, field: dict, value: str) -> bool:
-    """Fill a cascader (province→city) field by selecting two levels."""
+    """Fill a cascader (province→city) field by selecting two levels.
+
+    支持 ant-design 和 ElementUI。
+    每一级都有 3 种策略：精确模糊匹配 → 关键词推断 → 搜索框兜底。
+    ⚠️ 绝对不 fallback 到 fill_custom_dropdown（会串到页面上别的下拉）。
+    """
     uid = field["uid"]
     locator = page.locator(f'[data-resume-autofill-id="{uid}"]')
 
     parts = _split_cascader_value(value)
-    if not parts or len(parts) < 2:
-        return fill_custom_dropdown(page, field, value)
+    single_level = not parts or len(parts) < 2
 
-    province, city = parts[0], parts[1]
-
+    # 1. 点开 cascader —— 尝试点击容器里的真实触发元素
     try:
-        locator.click(force=True)
-        page.wait_for_timeout(400)
+        trigger = locator.locator(
+            '.ant-cascader-picker, .ant-select-selector, .ant-select-selection, '
+            '.el-input, .el-input__inner, .el-cascader'
+        )
+        if trigger.count() > 0:
+            trigger.first.click(force=True)
+        else:
+            locator.click(force=True)
+        page.wait_for_timeout(500)
     except Exception as exc:
         print(f"  cascader click failed: {exc}")
         return False
 
-    if not _click_cascader_level(page, province):
+    # 2. 先检查 cascader 菜单是否真的打开了
+    _probe = page.locator('.ant-cascader-menu:visible, .el-cascader-menu:visible')
+    if _probe.count() == 0:
+        # 可能是 ant-select 伪装的 cascader，尝试 select 下拉
+        _probe2 = page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden):visible')
+        if _probe2.count() > 0:
+            single_level = True
+        else:
+            print(f"  cascader: 下拉菜单没有打开！（可能 stamp 到了错误的元素上）")
+            return False
+
+    # ── 单级 cascader / select-like cascader ──
+    if single_level:
+        target = value.strip()
+        ok = _click_cascader_single(page, target)
+        if not ok and target:
+            # 模糊匹配：去掉常见后缀再试
+            for suffix in ['族', '员', '生', '人', '级', '位', '士', '科', '好', '是', '否']:
+                if target.endswith(suffix) and len(target) > 1:
+                    ok = _click_cascader_single(page, target[:-1])
+                    if ok:
+                        break
+        if not ok:
+            # 选第一个可用项作为兜底
+            ok = _click_cascader_single(page, "")
+        page.wait_for_timeout(150)
         _close_cascader(page)
+        if ok:
+            return True
+        print(f"  cascader: 单级匹配 {value!r} 失败，放弃")
+        return False
+
+    # ── 两级 cascader（省/市）──
+    province, city = parts[0], parts[1]
+
+    # 3. 选省/直辖市
+    province_ok = _click_cascader_level(page, province, is_province=True)
+    if not province_ok:
+        print(f"  cascader: 没找到 {province!r}，尝试直接找第一个省/直辖市...")
+        province_ok = _click_cascader_level(page, "", is_province=True)
+    if not province_ok:
+        _close_cascader(page)
+        print(f"  cascader: 省级选择失败，放弃（未 fallback 到 dropdown，避免串到别的下拉）")
         return False
 
     page.wait_for_timeout(400)
 
-    if not _click_cascader_level(page, city):
+    # 4. 选市/区域
+    city_ok = _click_cascader_level(page, city, is_province=False)
+    if not city_ok:
+        print(f"  cascader: 没找到 {city!r}，尝试直接选第一个可用项...")
+        city_ok = _click_cascader_level(page, "", is_province=False)
+    if not city_ok:
         _close_cascader(page)
+        print(f"  cascader: 市级选择失败，放弃")
         return False
 
-    page.wait_for_timeout(200)
+    page.wait_for_timeout(150)
     _close_cascader(page)
     return True
 
 
+def _click_cascader_single(page, target):
+    """单级 cascader/select 选择：在可见菜单项中匹配 target。
+
+    target 为空时选第一个可用项。
+    同时支持 ant-cascader-menu 和 ant-select-dropdown 两种下拉。
+    """
+    # cascader 菜单项
+    cascader_items = page.locator(
+        '.ant-cascader-menu:visible .ant-cascader-menu-item:visible, '
+        '.ant-cascader-menu:visible .ant-cascader-menu-item-content:visible'
+    )
+    # select 下拉项
+    select_items = page.locator(
+        '.ant-select-dropdown:not(.ant-select-dropdown-hidden):visible .ant-select-item-option:visible, '
+        '.ant-select-dropdown:not(.ant-select-dropdown-hidden):visible li[role=option]:visible'
+    )
+
+    # 精确/包含匹配 cascader
+    if target:
+        count = cascader_items.count()
+        for i in range(count):
+            txt = (cascader_items.nth(i).inner_text() or '').strip()
+            if txt == target or target in txt or txt in target:
+                cascader_items.nth(i).click(force=True)
+                return True
+        # 匹配 select
+        count = select_items.count()
+        for i in range(count):
+            txt = (select_items.nth(i).inner_text() or '').strip()
+            if txt == target or target in txt or txt in target:
+                select_items.nth(i).click(force=True)
+                return True
+        return False
+
+    # target 为空 -> 选第一个
+    if cascader_items.count() > 0:
+        cascader_items.first.click(force=True)
+        return True
+    if select_items.count() > 0:
+        select_items.first.click(force=True)
+        return True
+    return False
+
+
 def _split_cascader_value(value: str) -> list[str]:
-    """Split '广东省 深圳市' or '广东深圳' into [province, city]."""
-    for sep in [" ", " ", ",", "，", "-"]:
+    """Split '广东省 深圳市' or '广东深圳' into [province, city].
+
+    多级尝试：先显式分隔符，再省/市后缀，再直辖市关键词，最后折中。
+    """
+    # 策略 1: 显式分隔符
+    for sep in [" ", "，", ",", "-", "/", "_", "·"]:
         if sep in value:
             parts = [p.strip() for p in value.split(sep, 1) if p.strip()]
             if len(parts) >= 2:
                 return parts
 
-    for suffix_pair in [("省", "市"), ("省", "区"), ("省", "县")]:
-        p_suffix, c_suffix = suffix_pair
+    # 策略 2: 省/市/区/县 后缀
+    suffix_pairs = [
+        ("省", "市"), ("省", "区"), ("省", "县"), ("省", "自治州"),
+        ("市", "区"), ("市", "县"), ("市", "市辖区"),
+        ("自治区", "市"), ("自治区", "地区"), ("自治区", "盟"),
+        ("特别行政区", ""),
+    ]
+    for p_suffix, c_suffix in suffix_pairs:
         if p_suffix in value:
             idx = value.index(p_suffix) + len(p_suffix)
             province = value[:idx]
@@ -1399,128 +1566,378 @@ def _split_cascader_value(value: str) -> list[str]:
             if city_rest:
                 return [province, city_rest]
 
+    # 策略 3: 直辖市单独提取（"上海浦东" → ["上海", "浦东"]）
+    direct_municipalities = ["北京市", "上海市", "天津市", "重庆市"]
+    for dm in direct_municipalities:
+        if value.startswith(dm):
+            return [dm, value[len(dm):] or dm]
+    short_dm = ["北京", "上海", "天津", "重庆"]
+    for dm in short_dm:
+        if value.startswith(dm) and len(value) > len(dm):
+            return [dm, value[len(dm):]]
+
+    # 策略 4: 折中切分（实在没分隔符就从中间拆）
     if len(value) >= 4:
         mid = len(value) // 2
-        for i in range(mid - 1, mid + 2):
-            if 0 < i < len(value):
-                return [value[:i], value[i:]]
+        return [value[:mid], value[mid:]]
 
     return []
 
 
-def _click_cascader_level(page: Any, target: str) -> bool:
-    """Click a matching item in the currently visible cascader menu level."""
-    target_norm = target.replace(" ", "").lower()
+# 省/直辖市标准名表（用于关键词推断）
+_PROVINCIAL_KEYWORDS = [
+    "北京市", "上海市", "天津市", "重庆市",
+    "广东省", "江苏省", "浙江省", "山东省", "河南省", "河北省",
+    "四川省", "湖北省", "湖南省", "福建省", "安徽省", "江西省",
+    "辽宁省", "吉林省", "黑龙江省", "山西省", "陕西省", "甘肃省",
+    "云南省", "贵州省", "海南省", "青海省", "宁夏回族自治区",
+    "新疆维吾尔自治区", "西藏自治区", "内蒙古自治区", "广西壮族自治区",
+    "澳门特别行政区", "香港特别行政区", "台湾省",
+]
 
-    menu_item_sels = [
+
+def _click_cascader_level(page: Any, target: str, *, is_province: bool = False) -> bool:
+    """点击 cascader 当前可见级别的目标项。
+
+    三级策略：
+    1. 精确/包含模糊匹配 target
+    2. target 为空或匹配不到时 —— 省/直辖市级推断第一个真实省，市级找第一个真实市
+    3. 搜索框兜底（ant-cascader-show-search / el-cascader filterable）
+    """
+    target_norm = (target or "").replace(" ", "").lower()
+
+    # ant-design + ElementUI 覆盖的菜单选择器
+    all_item_sels = [
         '.ant-cascader-menu-item-content',
         '.ant-cascader-menu-item',
+        '.el-cascader-node__label',
+        '.el-cascader-menu-item',
+        '.el-cascader-node',
     ]
 
-    for sel in menu_item_sels:
-        try:
-            items = page.locator(f'{sel}:visible')
-            count = items.count()
-            for i in range(count):
-                item_text = items.nth(i).inner_text()
-                item_norm = item_text.replace(" ", "").lower()
-                if target_norm == item_norm or target_norm in item_norm or item_norm in target_norm:
-                    items.nth(i).click()
+    # 获取当前所有可见菜单项的集合（ant 可能多列同时显示，el 也是分 column）
+    def _get_visible_items():
+        seen = []
+        for sel in all_item_sels:
+            try:
+                locs = page.locator(f'{sel}:visible')
+                count = locs.count()
+                for i in range(count):
+                    el = locs.nth(i)
+                    text = el.inner_text().strip()
+                    if text:
+                        seen.append((el, text))
+            except Exception:
+                continue
+        return seen
+
+    items = _get_visible_items()
+    if not items:
+        return False
+
+    # 策略 1: 有 target 时做匹配
+    if target_norm:
+        for el, text in items:
+            text_norm = text.replace(" ", "").lower()
+            if target_norm == text_norm or target_norm in text_norm or text_norm in target_norm:
+                try:
+                    el.click()
                     return True
+                except Exception:
+                    continue
+
+        # 策略 1b: 省级时用省名关键词推断（target="广东" 但菜单显示 "广东省"）
+        if is_province:
+            for kw in _PROVINCIAL_KEYWORDS:
+                kw_norm = kw.replace(" ", "").lower()
+                if target_norm in kw_norm or kw_norm in target_norm:
+                    for el, text in items:
+                        text_norm = text.replace(" ", "").lower()
+                        if kw_norm == text_norm or text_norm == target_norm:
+                            try:
+                                el.click()
+                                return True
+                            except Exception:
+                                continue
+
+    # 策略 2: 无 target 或 1 没命中 → 选第一个"真实"选项（跳过禁用/空/占位）
+    for el, text in items:
+        text_norm = text.replace(" ", "")
+        if not text_norm:
+            continue
+        # 跳过 ant-design 的禁用态
+        try:
+            aria_disabled = el.get_attribute("aria-disabled")
+            if aria_disabled == "true":
+                continue
+        except Exception:
+            pass
+        # 跳过明显是搜索/占位的
+        if text_norm in ("请选择", "全部", "所有", "省份", "地区", "请选择省份", "请选择地区"):
+            continue
+        try:
+            el.click()
+            return True
         except Exception:
             continue
 
-    try:
-        input_el = page.locator('.ant-cascader-dropdown:not(.ant-cascader-dropdown-hidden) input, .ant-cascader input')
-        if input_el.count() > 0:
-            input_el.first.fill("")
-            input_el.first.type(target, delay=50)
-            page.wait_for_timeout(500)
-            for sel in menu_item_sels:
-                try:
-                    filtered = page.locator(f'{sel}:visible')
-                    if filtered.count() > 0:
-                        filtered.first.click()
-                        return True
-                except Exception:
-                    continue
-    except Exception:
-        pass
+    # 策略 3: 搜索框兜底（如果有搜索框就 type 进去）
+    if target_norm:
+        try:
+            search_input = page.locator(
+                '.ant-cascader-dropdown input, '
+                '.ant-cascader-search-input, '
+                '.el-cascader-panel input'
+            )
+            if search_input.count() > 0:
+                box = search_input.first
+                box.click()
+                box.fill("")
+                box.type(target, delay=30)
+                page.wait_for_timeout(500)
+                # 搜索完再找一次
+                items = _get_visible_items()
+                for el, text in items:
+                    text_norm = text.replace(" ", "").lower()
+                    if target_norm == text_norm or target_norm in text_norm or text_norm in target_norm:
+                        try:
+                            el.click()
+                            return True
+                        except Exception:
+                            continue
+                # 实在不行点第一个
+                for el, text in items:
+                    if text.strip():
+                        try:
+                            el.click()
+                            return True
+                        except Exception:
+                            continue
+        except Exception:
+            pass
 
     return False
 
 
 def _close_cascader(page: Any) -> None:
-    try:
-        page.locator("body").click()
-    except Exception:
-        pass
+    safe_body_click(page)
 
 
 def fill_custom_dropdown(page: Any, field: dict, value: str) -> bool:
     uid = field["uid"]
     locator = page.locator(f'[data-resume-autofill-id="{uid}"]')
 
+    # ⚡ 先精确找到真正的下拉触发器 — .ant-select-selector / .ant-select-arrow / .el-select
+    trigger = None
     try:
-        locator.click(force=True)
-        page.wait_for_timeout(350)
+        for sel in [
+            '.ant-select-selector',
+            '.ant-select-arrow',
+            '.el-select .el-input__suffix',
+            '.el-input__suffix',
+        ]:
+            t = locator.locator(sel)
+            if t.count() > 0:
+                trigger = t.first
+                break
+        if trigger is None:
+            for sel in ['.ant-select', '.el-select']:
+                t = locator.locator(sel)
+                if t.count() > 0:
+                    trigger = t.first
+                    break
+        if trigger is None:
+            trigger = locator
+    except Exception:
+        trigger = locator
+
+    # ========== 关键词同义词映射 ==========
+    # 下拉选项经常用缩写/全称/英文，这里做规范化
+    _SYNONYM_MAP = {
+        "cet-6": ["大学英语六级", "英语六级", "cet6", "cet_6", "六级"],
+        "cet-4": ["大学英语四级", "英语四级", "cet4", "cet_4", "四级"],
+        "tem-4": ["英语专业四级", "专四", "tem4"],
+        "tem-8": ["英语专业八级", "专八", "tem8"],
+        "中国共产主义青年团团员": ["共青团员", "团员"],
+        "中国共产党党员": ["党员", "中共党员"],
+        "中国共产党预备党员": ["预备党员"],
+        "群众": ["人民群众"],
+    }
+
+    norm = value.replace(" ", "").lower()
+
+    # 扩展匹配池：原值 + 同义词展开 + 反向映射
+    def _match_keywords(target_norm, option_text):
+        """检查 option_text 是否匹配 target_norm 或其任何同义词。"""
+        ot = option_text.replace(" ", "").lower()
+        # 直接匹配
+        if target_norm == ot or target_norm in ot or ot in target_norm:
+            return True
+        # 同义词展开：target_norm 展开到所有候选
+        for canonical, syns in _SYNONYM_MAP.items():
+            all_forms = [canonical] + syns
+            for form in all_forms:
+                if form.replace(" ", "").lower() == target_norm or form.replace(" ", "").lower() in target_norm:
+                    # target_norm 匹配到了这个 canonical 的任何同义词 → 用 canonical 去匹配 option
+                    c_norm = canonical.replace(" ", "").lower()
+                    if c_norm == ot or c_norm in ot or ot in c_norm:
+                        return True
+                    for s in syns:
+                        s_norm = s.replace(" ", "").lower()
+                        if s_norm == ot or s_norm in ot or ot in s_norm:
+                            return True
+        # 反向：option 的文本匹配到某个 canonical，看 canonical 的同义词里有没有 target
+        for canonical, syns in _SYNONYM_MAP.items():
+            c_norm = canonical.replace(" ", "").lower()
+            if c_norm == ot or c_norm in ot or ot in c_norm:
+                all_forms = [canonical] + syns
+                for form in all_forms:
+                    fn = form.replace(" ", "").lower()
+                    if fn == target_norm or fn in target_norm or target_norm in fn:
+                        return True
+        return False
+
+    # ========== 打开下拉 ==========
+    try:
+        trigger.click(force=True)
+        # ant-design 打开下拉后：先等 selector 出现 ant-select-open 标记
+        page.wait_for_timeout(400)
+        # 有些远程搜索 dropdown 打开后选项是异步加载的，多等两轮
+        for _retry in range(2):
+            page.wait_for_timeout(250)
+            # 检查是否已经有选项
+            _probe = page.locator('.ant-select-item-option:visible, .el-select-dropdown__item:visible')
+            if _probe.count() > 0:
+                break
     except Exception as exc:
         print(f"  dropdown click failed: {exc}")
         return False
 
-    norm = value.replace(" ", "").lower()
-
     option_selectors = [
         '.ant-select-item-option-content',
+        '.ant-select-item-option',
         '.ant-select-item',
-        '.ant-cascader-menu-item-content',
-        '.ant-cascader-menu-item',
         '.el-select-dropdown__item',
         '[role="option"]',
-        '[role="menuitem"]',
     ]
 
-    for sel in option_selectors:
+    def _get_visible_options():
+        seen = []
+        for sel in option_selectors:
+            try:
+                opts = page.locator(f'{sel}:visible')
+                n = opts.count()
+                for i in range(n):
+                    try:
+                        txt = opts.nth(i).inner_text().strip()
+                        if txt and not any(s[1] == txt for s in seen):
+                            seen.append((opts.nth(i), txt))
+                    except Exception:
+                        pass
+            except Exception:
+                continue
+        return seen
+
+    visible_opts = _get_visible_options()
+
+    # --- 第 1 步：直接匹配 ---
+    for opt_el, opt_text in visible_opts:
+        if _match_keywords(norm, opt_text):
+            opt_el.click()
+            page.wait_for_timeout(200)
+            return True
+
+    _debug = [t for _, t in visible_opts[:8]]
+    print(f"  dropdown: 直接匹配失败，下拉前8项 = {_debug}")
+
+    # --- 第 2 步：搜索框兜底 ---
+    # 先关下拉重开（确保 fresh state）
+    try:
+        page.evaluate(SAFE_BODY_CLICK_JS)
+        page.wait_for_timeout(150)
+        trigger.click(force=True)
+        page.wait_for_timeout(400)
+    except Exception:
+        pass
+
+    # 搜索框选择器 — 要覆盖 ant-design 的远程搜索和本地搜索两种场景
+    search_selectors = [
+        '.ant-select-open .ant-select-selection-search-input',
+        '.ant-select-focused .ant-select-selection-search-input',
+        '.ant-select-selection-search-input',
+        '.el-select-dropdown__wrap input',
+        '.el-select .el-input__inner',
+    ]
+
+    search_input = None
+    for sel in search_selectors:
         try:
-            options = page.locator(f'{sel}:visible')
-            count = options.count()
-            for i in range(count):
-                opt_text = options.nth(i).inner_text()
-                opt_norm = opt_text.replace(" ", "").lower()
-                if norm == opt_norm or norm in opt_norm or opt_norm in norm:
-                    options.nth(i).click()
-                    page.wait_for_timeout(200)
-                    return True
+            inps = page.locator(sel)
+            if inps.count() > 0:
+                search_input = inps.first
+                print(f"  dropdown: 找到搜索框 selector={sel}")
+                break
         except Exception:
             continue
 
-    try:
-        input_el = locator.locator("input")
-        if input_el.count() > 0:
-            input_el.first.click()
-            input_el.first.press("Control+a")
-            input_el.first.press("Backspace")
-            page.wait_for_timeout(100)
-            input_el.first.type(value, delay=50)
-            page.wait_for_timeout(500)
+    if search_input is None:
+        print(f"  dropdown: 没找到任何搜索框，放弃")
+        return False
 
-            for sel in option_selectors:
-                try:
-                    filtered = page.locator(f'{sel}:visible')
-                    if filtered.count() > 0:
-                        filtered.first.click()
-                        page.wait_for_timeout(200)
-                        return True
-                except Exception:
+    try:
+        # 激活搜索框 + 清空 + type
+        search_input.click()
+        page.wait_for_timeout(80)
+        # 有些 ant-select 需要先按 Ctrl+A 再 Backspace
+        try:
+            search_input.press("Control+a")
+            page.wait_for_timeout(40)
+            search_input.press("Backspace")
+            page.wait_for_timeout(40)
+        except Exception:
+            pass
+        try:
+            search_input.fill("")
+        except Exception:
+            pass
+        page.wait_for_timeout(100)
+        search_input.type(value, delay=30)
+        # 有些远程搜索是 debounce 的，多等一会
+        page.wait_for_timeout(800)
+
+        visible_opts = _get_visible_options()
+        _debug = [t for _, t in visible_opts[:8]]
+        print(f"  dropdown: 搜索后前8项 = {_debug}")
+
+        # 搜索后再精确/同义词匹配
+        for opt_el, opt_text in visible_opts:
+            if _match_keywords(norm, opt_text):
+                opt_el.click()
+                page.wait_for_timeout(200)
+                return True
+
+        # 还是没匹配 → 选第一个真实可用项
+        for opt_el, opt_text in visible_opts:
+            ot_norm = opt_text.replace(" ", "")
+            if not ot_norm:
+                continue
+            if ot_norm in ("请选择", "全部", "所有", "—", "-"):
+                continue
+            try:
+                aria_disabled = opt_el.get_attribute("aria-disabled")
+                if aria_disabled == "true":
                     continue
-    except Exception:
-        pass
+            except Exception:
+                pass
+            print(f"  dropdown: 放弃精确匹配，选第一个可用项 = {opt_text!r}")
+            opt_el.click()
+            page.wait_for_timeout(200)
+            return True
 
-    try:
-        document_body = page.locator("body")
-        document_body.click()
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"  dropdown: 搜索框异常: {e}")
+
+    safe_body_click(page)
     return False
 
 
@@ -1759,9 +2176,9 @@ def _try_fill_date_click_type(page: Any, locator: Any, uid: str, value: str) -> 
         except Exception:
             pass
 
-        # Click body to close picker and trigger blur
+        # Click body to close picker and trigger blur（用 JS 版，避免误触文件上传）
         try:
-            page.locator("body").click(position={"x": 1, "y": 1})
+            safe_body_click(page)
             page.wait_for_timeout(200)
             current_val = target.input_value()
             if current_val and current_val.strip():
@@ -1993,10 +2410,7 @@ def _try_fill_date_calendar_nav(page: Any, locator: Any, value: str) -> bool:
                 break
 
         if not clicked:
-            try:
-                page.locator("body").click()
-            except Exception:
-                pass
+            safe_body_click(page)
             return False
 
         return True
@@ -2028,6 +2442,36 @@ def fill_field(page: Any, field: dict, value: str) -> bool:
 # ─────────────────────────────────────────────────────────
 # 浏览器和 Widget 管理
 # ─────────────────────────────────────────────────────────
+
+def _print_profile_status(profile_dir: Path, fresh_profile: bool = False) -> None:
+    """启动前打印 profile 和 cookies 备份的状态，让用户一眼看出登录态情况。"""
+    if fresh_profile:
+        print("\n🔄 fresh-profile 模式：将忽略旧登录态，创建全新 profile")
+        return
+
+    has_profile = profile_dir.exists() and any(profile_dir.iterdir())
+    # cookies 备份在 outputs/saved_cookies.json（和本脚本同目录）
+    cookie_backup = Path(__file__).parent / "saved_cookies.json"
+    has_cookie_backup = cookie_backup.exists() and cookie_backup.stat().st_size > 10
+
+    print(f"\n📁 登录态检测:")
+    print(f"  profile 目录: {profile_dir}")
+    if has_profile:
+        print(f"  ✅ 检测到历史 profile（将自动复用里面的登录态）")
+    else:
+        print(f"  ⚠️  这是一个全新 profile（如果要登录，请先跑选项 [3] 登录并保持登录态）")
+
+    if has_cookie_backup:
+        try:
+            import json
+            n = len(json.loads(cookie_backup.read_text(encoding="utf-8")))
+            print(f"  ✅ 检测到 {n} 条 cookies 备份（启动时会注入到 profile）")
+        except Exception:
+            print(f"  ⚠️  cookies 备份文件存在但解析失败")
+    else:
+        print(f"  ℹ️  没有 cookies 备份（profile 本身就是最好的持久化方式，这只是额外保险）")
+    print()
+
 
 def _kill_stray_edge_processes(profile_dir: str):
     """Kill any msedge.exe processes that might be locking the profile dir."""
@@ -2068,6 +2512,9 @@ def launch_browser_context(p, args):
     profile_dir = Path(args.profile_dir)
     profile_dir.mkdir(parents=True, exist_ok=True)
     profile_str = str(profile_dir)
+
+    # 📋 启动前：检测 profile 和 cookies 备份状态，给用户反馈
+    _print_profile_status(profile_dir, args.fresh_profile)
 
     # 先清理可能锁住 profile 的残留 Edge 进程
     _kill_stray_edge_processes(profile_str)
@@ -2268,6 +2715,13 @@ def run_autofill_v2(page, resume: dict, client, timeout_sec: float = 120) -> dic
     """
     click_add_buttons_for_hidden_sections(page)
 
+    # ⚠️ 关键防护：填表前禁用所有文件上传组件，防止 Playwright 真实 click 误触弹出选择框
+    try:
+        page.evaluate(DISABLE_FILE_UPLOAD_JS)
+        print("[safety] 已禁用页面文件上传组件")
+    except Exception as exc:
+        print(f"[safety] 禁用上传组件失败（不影响主要流程）: {exc}")
+
     print("\n[v2] Scanning form fields...")
     set_widget_status(page, "正在扫描页面字段...", button_text="扫描中...", tone="working")
 
@@ -2433,6 +2887,13 @@ def run_autofill_v2(page, resume: dict, client, timeout_sec: float = 120) -> dic
 
         page.wait_for_timeout(300)
 
+    # 恢复文件上传组件（填表完了）
+    try:
+        page.evaluate(RESTORE_FILE_UPLOAD_JS)
+        print("[safety] 已恢复页面文件上传组件")
+    except Exception:
+        pass
+
     print(f"\n{'='*50}")
     print(f"[v2] Done: {len(results['filled'])} filled, "
           f"{len(results['skipped'])} skipped, {len(results['failed'])} failed")
@@ -2498,6 +2959,11 @@ def main() -> int:
             except Exception:
                 pass
         finally:
+            # 退出前保存 cookies（登录态备份）
+            try:
+                save_browser_cookies(context, SCRIPT_DIR)
+            except Exception:
+                pass
             try:
                 context.close()
             except Exception:
